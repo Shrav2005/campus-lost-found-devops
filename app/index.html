@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Campus Lost & Found helps students report, search, and return misplaced belongings.">
+  <title>Campus Lost & Found Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="Campus Lost and Found home">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span>Campus <strong>Lost & Found</strong></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">Menu</button>
+      <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+        <a class="active" href="#home">Home</a>
+        <a href="#items" data-filter-link="lost">Lost Items</a>
+        <a href="#items" data-filter-link="found">Found Items</a>
+        <a class="nav-cta" href="#report">Report Item</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">A little help goes a long way</p>
+          <h1>Find What You Lost.<br><span>Return What You Found.</span></h1>
+          <p class="hero-text">A trusted campus space to reconnect students with the belongings that matter to them.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#items">View Lost Items <span aria-hidden="true">&#8594;</span></a>
+            <a class="button button-light" href="#report">Report an Item</a>
+          </div>
+        </div>
+        <div class="hero-note" aria-label="Campus community notice">
+          <div class="note-icon" aria-hidden="true">&#10003;</div>
+          <p class="note-label">Campus community</p>
+          <p class="note-title">Good things find their way back.</p>
+          <p class="note-detail">Every report brings a lost belonging one step closer to home.</p>
+          <div class="note-line"></div>
+          <p class="note-footer">Keep an eye out. Lend a hand.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Portal statistics">
+      <div class="container stats-grid">
+        <div class="stat"><span class="stat-number" id="lost-count">0</span><span class="stat-label">Lost items</span></div>
+        <div class="stat"><span class="stat-number" id="found-count">0</span><span class="stat-label">Found items</span></div>
+        <div class="stat"><span class="stat-number" id="returned-count">0</span><span class="stat-label">Items returned</span></div>
+        <div class="stat stat-note"><span class="pulse" aria-hidden="true"></span><span>Updated by students, for students</span></div>
+      </div>
+    </section>
+
+    <section id="items" class="items-section section-space">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Browse the board</p>
+            <h2>Recent reports</h2>
+          </div>
+          <p class="section-intro">Search the latest items reported around campus.</p>
+        </div>
+        <div class="toolbar">
+          <label class="search-box" for="search-input">
+            <span aria-hidden="true">&#9906;</span>
+            <input id="search-input" type="search" placeholder="Search item or category..." autocomplete="off">
+          </label>
+          <div class="filter-group" role="group" aria-label="Filter items by status">
+            <button class="filter-button active" type="button" data-filter="all">All items</button>
+            <button class="filter-button" type="button" data-filter="lost">Lost</button>
+            <button class="filter-button" type="button" data-filter="found">Found</button>
+          </div>
+        </div>
+        <div id="items-grid" class="items-grid" aria-live="polite"></div>
+        <p id="empty-state" class="empty-state" hidden>No items match your search. Try a different word or filter.</p>
+      </div>
+    </section>
+
+    <section id="report" class="report-section section-space">
+      <div class="container report-grid">
+        <div class="report-copy">
+          <p class="eyebrow">Make a difference</p>
+          <h2>Have something to report?</h2>
+          <p>Give your fellow students the details they need to recognize an item and help it get home.</p>
+          <div class="report-tip"><span aria-hidden="true">i</span><p>Please do not include sensitive personal information in your report.</p></div>
+        </div>
+        <form id="report-form" class="report-form">
+          <div class="form-row">
+            <div class="field"><label for="item-name">Item name</label><input id="item-name" name="itemName" type="text" placeholder="e.g. Blue water bottle" required></div>
+            <div class="field"><label for="category">Category</label><select id="category" name="category" required><option value="">Choose a category</option><option>Electronics</option><option>Cards & IDs</option><option>Personal items</option><option>Books & stationery</option><option>Clothing</option><option>Other</option></select></div>
+          </div>
+          <fieldset class="field choice-field"><legend>Report type</legend><div class="choice-options"><label><input type="radio" name="status" value="lost" required> Lost item</label><label><input type="radio" name="status" value="found"> Found item</label></div></fieldset>
+          <div class="form-row">
+            <div class="field"><label for="location">Location</label><input id="location" name="location" type="text" placeholder="e.g. Library, 2nd floor" required></div>
+            <div class="field"><label for="date">Date</label><input id="date" name="date" type="date" required></div>
+          </div>
+          <div class="field"><label for="description">Description</label><textarea id="description" name="description" rows="4" placeholder="Add color, distinguishing marks, or other helpful details" required></textarea></div>
+          <button class="button button-primary submit-button" type="submit">Submit report <span aria-hidden="true">&#8594;</span></button>
+          <p id="success-message" class="success-message" role="status" hidden>Item reported successfully!</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div><a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true">+</span><span>Campus <strong>Lost & Found</strong></span></a><p>A small act of kindness can make a big difference.</p></div>
+      <div class="footer-meta"><span>DevOps Mini Project</span><span>Copyright 2025 Campus Lost & Found</span></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

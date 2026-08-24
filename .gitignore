@@ -1,0 +1,20 @@
+# AWS private keys
+*.pem
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.exe
+
+# Ansible local inventory
+ansible/inventory.ini
+
+# Environment/secrets
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db

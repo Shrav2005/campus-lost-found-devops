@@ -1,0 +1,51 @@
+---
+- name: Deploy Campus Lost and Found Application
+  hosts: web
+
+  tasks:
+
+    - name: Update package cache
+      become: true
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install Docker
+      become: true
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Docker service
+      become: true
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Create application directory for ubuntu user
+      file:
+        path: /home/ubuntu/campus-lost-found
+        state: directory
+        mode: "0755"
+
+    - name: Copy application files
+      copy:
+        src: ../app/
+        dest: /home/ubuntu/campus-lost-found/
+
+    - name: Build Docker image
+      become: true
+      command:
+        cmd: docker build -t campus-lost-found:latest /home/ubuntu/campus-lost-found
+
+    - name: Remove old container if it exists
+      become: true
+      command:
+        cmd: docker rm -f campus-lost-found
+      failed_when: false
+
+    - name: Run Campus Lost and Found container
+      become: true
+      command:
+        cmd: docker run -d --name campus-lost-found --restart unless-stopped -p 80:80 campus-lost-found:latest
