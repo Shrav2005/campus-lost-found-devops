@@ -1,5 +1,5 @@
 
-name: Campus Lost and Found CI
+name: Campus Lost and Found CI/CD
 
 on:
   push:
@@ -8,8 +8,15 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE_NAME: ghcr.io/shrav2005/campus-lost-found
+
 jobs:
-  build-and-test:
+  build-test-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,10 +45,31 @@ jobs:
             fi
             sleep 2
           done
-          echo "Application HTTP test failed"
           docker logs campus-lost-found-test
           exit 1
 
       - name: Stop test container
         if: always()
         run: docker rm -f campus-lost-found-test || true
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Publish Docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app
+          push: true
+          tags: |
+            ghcr.io/shrav2005/campus-lost-found:latest
+            ghcr.io/shrav2005/campus-lost-found:${{ github.sha }}
