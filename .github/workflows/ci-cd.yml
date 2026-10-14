@@ -73,3 +73,27 @@ jobs:
           tags: |
             ghcr.io/shrav2005/campus-lost-found:latest
             ghcr.io/shrav2005/campus-lost-found:${{ github.sha }}
+  deploy:
+    needs: build-test-publish
+    runs-on: self-hosted
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      packages: read
+
+    steps:
+      - name: Pull latest Docker image
+        shell: powershell
+        run: |
+          docker pull ghcr.io/shrav2005/campus-lost-found:latest
+
+      - name: Replace running application
+        shell: powershell
+        run: |
+          docker rm -f campus-lost-found-ghcr
+          docker run -d --name campus-lost-found-ghcr --network campus-lost-found_default -p 8082:80 --restart unless-stopped ghcr.io/shrav2005/campus-lost-found:latest
+
+      - name: Verify deployment
+        shell: powershell
+        run: |
+          Start-Sleep -Seconds 5
+          Invoke-WebRequest http://localhost:8082/ -UseBasicParsing
