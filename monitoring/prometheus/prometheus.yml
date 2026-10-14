@@ -4,15 +4,15 @@ global:
 scrape_configs:
   - job_name: "prometheus"
     static_configs:
-      - targets: ["prometheus:9090"]
+      - targets: ["localhost:9090"]
 
-  - job_name: "campus-website"
+  - job_name: "blackbox"
     metrics_path: /probe
     params:
       module: [http_2xx]
     static_configs:
       - targets:
-          - http://host.docker.internal:8082
+          - http://campus-lost-found-ghcr
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -20,3 +20,7 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: blackbox:9115
+
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
