@@ -1,0 +1,47 @@
+
+name: Campus Lost and Found CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required application files
+        run: |
+          test -f app/index.html
+          test -f app/style.css
+          test -f app/script.js
+          test -f app/Dockerfile
+
+      - name: Build Docker image
+        run: docker build -t campus-lost-found:ci ./app
+
+      - name: Start application container
+        run: docker run -d --name campus-lost-found-test -p 8080:80 campus-lost-found:ci
+
+      - name: Test application HTTP response
+        run: |
+          for i in $(seq 1 15); do
+            if curl --fail http://localhost:8080/ -o /dev/null; then
+              echo "Application HTTP test passed"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Application HTTP test failed"
+          docker logs campus-lost-found-test
+          exit 1
+
+      - name: Stop test container
+        if: always()
+        run: docker rm -f campus-lost-found-test || true
