@@ -7,30 +7,27 @@ pipeline {
                 checkout scm
             }
         }
-
         stage('Build Check') {
             steps {
-                sh 'test -f app/index.html
-                sh 'test -f app/style.css
-                sh 'test -f app/script.js
-                echo 'Application files verified'
+                sh 'test -f app/index.html'
+                sh 'test -f app/style.css'
+                sh 'test -f app/script.js'
+                echo "Application files verified"
             }
         }
-
         stage('Test') {
             steps {
                 sh 'test -s app/index.html'
-                echo 'HTML test passed'
+                echo "HTML test passed"
             }
         }
     }
-
     post {
         success {
-            echo 'Campus Lost & Found pipeline passed!'
+            echo "Campus Lost & Found CI pipeline passed!"
         }
         failure {
-            echo 'Pipeline failed. Check Console Output.'
+            echo "Pipeline failed. Check Console Output."
         }
     }
 }
