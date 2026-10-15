@@ -1,4 +1,3 @@
-@'
 pipeline {
     agent any
 
@@ -11,9 +10,9 @@ pipeline {
 
         stage('Build Check') {
             steps {
-                sh 'test -f app/index.html'
-                sh 'test -f app/style.css'
-                sh 'test -f app/script.js'
+                sh 'test -f app/index.html
+                sh 'test -f app/style.css
+                sh 'test -f app/script.js
                 echo 'Application files verified'
             }
         }
@@ -28,11 +27,10 @@ pipeline {
 
     post {
         success {
-            echo 'Campus Lost & Found CI pipeline passed!'
+            echo 'Campus Lost & Found pipeline passed!'
         }
         failure {
-            echo 'Pipeline failed. Check the build console output.'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
 }
-'@ | Set-Content -Path .\Jenkinsfile -Encoding ascii
