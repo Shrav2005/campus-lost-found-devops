@@ -1,4 +1,4 @@
-@"
+@'
 pipeline {
     agent any
 
@@ -28,11 +28,11 @@ pipeline {
 
     post {
         success {
-            echo 'Campus Lost & Found pipeline passed!'
+            echo 'Campus Lost & Found CI pipeline passed!'
         }
         failure {
-            echo 'Pipeline failed. Check Console Output.'
+            echo 'Pipeline failed. Check the build console output.'
         }
     }
 }
-"@ | Set-Content -Path (Join-Path (Get-Location) 'Jenkinsfile') -Encoding ascii
+'@ | Set-Content -Path .\Jenkinsfile -Encoding ascii
